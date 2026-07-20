@@ -1,7 +1,7 @@
 # 📦 Telegram Gifts CDN
 
 This repository contains all actual **Telegram gifts** stored in multiple formats  
-(`.tgs`, `.png`, `.webp`) and served through CDN.
+(`.tgs`, `.png`, `.webp`, `.svg`) and served through CDN.
 
 ---
 
@@ -31,6 +31,11 @@ https://cdn.denzyve.shop/assets/png/<gift_name>.png
 https://cdn.denzyve.shop/assets/webp/<gift_name>.webp
 ```
 
+### 4. SVG (static preview)
+```
+https://cdn.denzyve.shop/assets/svg/<gift_name>.svg
+```
+
 ---
 
 ## 📖 Example
@@ -46,11 +51,14 @@ If the gift is named **gift_6012435906336654262**:
 - WebP preview:  
   [cdn.denzyve.shop/assets/webp/gift_6012435906336654262.webp](https://cdn.denzyve.shop/assets/webp/gift_6012435906336654262.webp)    
 
+- SVG preview:  
+  [cdn.denzyve.shop/assets/svg/gift_6012435906336654262.svg](https://cdn.denzyve.shop/assets/svg/gift_6012435906336654262.svg)    
+
 ---
 
 ## 📌 Notes
 - `.tgs` files are the original Lottie (JSON) animations.  
-- `.png` and `.webp` are static previews (first frame).  
+- `.png`, `.webp` and `.svg` are static previews (first frame).  
 - Files are updated regularly to match actual Telegram gifts.  
 
 ---
