@@ -7,12 +7,12 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT_DIR / ".env")
 
 from downloader import StarGiftsDownloader  # noqa: E402
 from converter import convert_all  # noqa: E402
-from catalog import write_catalog  # noqa: E402
+from catalog import load_archived_ids, write_catalog  # noqa: E402
 
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
@@ -21,34 +21,25 @@ logging.basicConfig(
 log = logging.getLogger("gifts.update")
 
 
-def get_existing_gifts() -> set[int]:
+def get_existing_tgs_ids() -> set[int]:
     gifts_dir = ROOT_DIR / "assets" / "tgs"
+    result: set[int] = set()
 
     if not gifts_dir.exists():
-        return set()
-
-    result = set()
+        return result
 
     for path in gifts_dir.glob("gift_*.tgs"):
         try:
             result.add(int(path.stem.removeprefix("gift_")))
         except ValueError:
-            log.warning("Unexpected gift filename: %s", path.name)
+            log.warning("Ignoring unexpected filename: %s", path.name)
 
     return result
 
 
 def set_github_output(new_gifts: bool, count: int) -> None:
-    """Pass new gift information to GitHub Actions."""
     output_file = os.getenv("GITHUB_OUTPUT")
-
     if not output_file:
-        log.info(
-            "GitHub Actions output unavailable; "
-            "new gifts: %s, count: %d",
-            new_gifts,
-            count,
-        )
         return
 
     with open(output_file, "a", encoding="utf-8") as file:
@@ -63,35 +54,31 @@ async def main() -> None:
     if not api_id or not api_hash:
         raise RuntimeError("TG_API_ID and TG_API_HASH are required")
 
-    # Remember gifts that existed before this update.
-    existing_gifts = get_existing_gifts()
+    # IDs already archived before this update.
+    known_ids = load_archived_ids() | get_existing_tgs_ids()
 
     downloader = StarGiftsDownloader(int(api_id), api_hash)
     download_result = await downloader.run()
-
-    # Detect newly downloaded gifts.
-    current_gifts = get_existing_gifts()
-    added_gifts = current_gifts - existing_gifts
-
-    new_gifts = len(added_gifts) > 0
-
-    log.info(
-        "New gifts detected: %d",
-        len(added_gifts),
-    )
-
-    set_github_output(new_gifts, len(added_gifts))
 
     converted = convert_all(
         max_workers=int(os.getenv("CONVERTER_WORKERS", "4"))
     )
 
+    # New means an ID that has never been archived before.
+    current_ids = {
+        int(item["id"])
+        for item in download_result.get("gifts", [])
+    }
+    new_ids = current_ids - known_ids
+
     write_catalog(download_result, converted)
+    set_github_output(bool(new_ids), len(new_ids))
 
     log.info(
         "Update complete: %d catalog entries; "
-        "%d unsupported/no-sticker gifts skipped",
+        "%d new gifts; %d unsupported/no-sticker gifts skipped",
         len(converted),
+        len(new_ids),
         download_result.get("skipped", 0),
     )
 
