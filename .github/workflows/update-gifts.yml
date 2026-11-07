@@ -57,7 +57,7 @@ jobs:
 
           pattern = r"(<!-- LAST_UPDATE_START -->).*?(<!-- LAST_UPDATE_END -->)"
           replacement = (
-              r"\1\n**Останнє надходження подарунків:** "
+              r"\1\n**Last Update:** "
               + timestamp
               + r"\n\2"
           )
