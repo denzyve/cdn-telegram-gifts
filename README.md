@@ -9,8 +9,14 @@ This repository contains all actual **Telegram gifts** stored in multiple format
 All assets are available at:
 
 ```
-https://cdn.denzyve.shop/assets/
+https://denzyve.github.io/cdn-telegram-gifts/assets/
 ```
+---
+
+## ⚙️ Status CDN
+<!-- LAST_UPDATE_START -->
+**Last Update:** N/A
+<!-- LAST_UPDATE_END -->
 
 ---
 
@@ -18,22 +24,22 @@ https://cdn.denzyve.shop/assets/
 
 ### 1. TGS (Telegram animated gift)
 ```
-https://cdn.denzyve.shop/assets/tgs/<gift_name>.tgs
+https://denzyve.github.io/cdn-telegram-gifts/assets/tgs/<gift_name>.tgs
 ```
 
 ### 2. PNG (static preview)
 ```
-https://cdn.denzyve.shop/assets/png/<gift_name>.png
+https://denzyve.github.io/cdn-telegram-gifts/assets/png/<gift_name>.png
 ```
 
 ### 3. WebP (static preview)
 ```
-https://cdn.denzyve.shop/assets/webp/<gift_name>.webp
+https://denzyve.github.io/cdn-telegram-gifts/assets/webp/<gift_name>.webp
 ```
 
 ### 4. SVG (static preview)
 ```
-https://cdn.denzyve.shop/assets/svg/<gift_name>.svg
+https://denzyve.github.io/cdn-telegram-gifts/assets/svg/<gift_name>.svg
 ```
 
 ---
@@ -43,16 +49,16 @@ https://cdn.denzyve.shop/assets/svg/<gift_name>.svg
 If the gift is named **gift_6012435906336654262**:
 
 - Animated TGS:  
-  [cdn.denzyve.shop/assets/tgs/gift_6012435906336654262.tgs](https://cdn.denzyve.shop/assets/tgs/gift_6012435906336654262.tgs)  
+  [denzyve.github.io/cdn-telegram-gifts/assets/tgs/gift_6012435906336654262.tgs](https://denzyve.github.io/cdn-telegram-gifts/assets/tgs/gift_6012435906336654262.tgs)  
 
 - PNG preview:  
-  [cdn.denzyve.shop/assets/png/gift_6012435906336654262.png](https://cdn.denzyve.shop/assets/png/gift_6012435906336654262.png)  
+  [denzyve.github.io/cdn-telegram-gifts/assets/png/gift_6012435906336654262.png](https://denzyve.github.io/cdn-telegram-gifts/assets/png/gift_6012435906336654262.png)  
 
 - WebP preview:  
-  [cdn.denzyve.shop/assets/webp/gift_6012435906336654262.webp](https://cdn.denzyve.shop/assets/webp/gift_6012435906336654262.webp)    
+  [denzyve.github.io/cdn-telegram-gifts/assets/webp/gift_6012435906336654262.webp](https://denzyve.github.io/cdn-telegram-gifts/assets/webp/gift_6012435906336654262.webp)    
 
 - SVG preview:  
-  [cdn.denzyve.shop/assets/svg/gift_6012435906336654262.svg](https://cdn.denzyve.shop/assets/svg/gift_6012435906336654262.svg)    
+  [denzyve.github.io/cdn-telegram-gifts/assets/svg/gift_6012435906336654262.svg](https://denzyve.github.io/cdn-telegram-gifts/assetss/svg/gift_6012435906336654262.svg)    
 
 ---
 
