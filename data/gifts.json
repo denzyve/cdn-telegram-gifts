@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-07T01:57:29+00:00",
-  "count": 151,
+  "updated_at": "2026-11-07T02:26:17+00:00",
+  "count": 152,
   "gifts": [
     {
       "id": 5167939598143193218,
@@ -2466,6 +2466,16 @@
         "first_sale_date": 1742157551,
         "last_sale_date": 1742922966
       }
+    },
+    {
+      "id": 5974210632977745012,
+      "filename": "gift_5974210632977745012",
+      "tgs": "assets/tgs/gift_5974210632977745012.tgs",
+      "png": "assets/png/gift_5974210632977745012.png",
+      "webp": "assets/webp/gift_5974210632977745012.webp",
+      "svg": "assets/svg/gift_5974210632977745012.svg",
+      "size": 40283,
+      "metadata": {}
     },
     {
       "id": 5980789805615678057,
