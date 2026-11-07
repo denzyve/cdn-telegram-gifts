@@ -1,0 +1,95 @@
+name: Update Telegram Gifts CDN
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-telegram-gifts
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Collect and process gifts
+        env:
+          TG_API_ID: ${{ secrets.TG_API_ID }}
+          TG_API_HASH: ${{ secrets.TG_API_HASH }}
+          HYDROGRAM_SESSION_STRING: ${{ secrets.HYDROGRAM_SESSION_STRING }}
+          CONVERTER_WORKERS: "4"
+        id: update
+        run: python scripts/run_update.py
+
+      - name: Update README timestamp
+        if: steps.update.outputs.new_gifts == 'true'
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timezone
+          from pathlib import Path
+          import re
+
+          path = Path("README.md")
+          content = path.read_text(encoding="utf-8")
+
+          timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+          pattern = r"(<!-- LAST_UPDATE_START -->).*?(<!-- LAST_UPDATE_END -->)"
+          replacement = (
+              r"\1\n**Останнє надходження подарунків:** "
+              + timestamp
+              + r"\n\2"
+          )
+
+          updated, count = re.subn(
+              pattern, replacement, content, count=1, flags=re.DOTALL
+          )
+
+          if count != 1:
+              raise RuntimeError("README timestamp markers not found")
+
+          path.write_text(updated, encoding="utf-8")
+          PY
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            DATE=$(date -u +"%Y-%m-%d %H:%M UTC")
+            NEW_GIFTS="${{ steps.update.outputs.new_gifts_count }}"
+
+            if [[ "${{ steps.update.outputs.new_gifts }}" == "true" ]]; then
+              MESSAGE="feat: add ${NEW_GIFTS} new Telegram gifts ($DATE)"
+            else
+              MESSAGE="chore: update gifts CDN ($DATE)"
+            fi
+
+            git add .
+            git commit -m "$MESSAGE"
+            git push
+          else
+            echo "No changes to commit"
+          fi
