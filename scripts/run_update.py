@@ -54,7 +54,6 @@ async def main() -> None:
     if not api_id or not api_hash:
         raise RuntimeError("TG_API_ID and TG_API_HASH are required")
 
-    # IDs already archived before this update.
     known_ids = load_archived_ids() | get_existing_tgs_ids()
 
     downloader = StarGiftsDownloader(int(api_id), api_hash)
@@ -64,7 +63,6 @@ async def main() -> None:
         max_workers=int(os.getenv("CONVERTER_WORKERS", "4"))
     )
 
-    # New means an ID that has never been archived before.
     current_ids = {
         int(item["id"])
         for item in download_result.get("gifts", [])
@@ -75,8 +73,8 @@ async def main() -> None:
     set_github_output(bool(new_ids), len(new_ids))
 
     log.info(
-        "Update complete: %d catalog entries; "
-        "%d new gifts; %d unsupported/no-sticker gifts skipped",
+        "Update complete: %d archived gifts; %d new gifts; "
+        "%d unsupported/no-sticker gifts skipped",
         len(converted),
         len(new_ids),
         download_result.get("skipped", 0),
